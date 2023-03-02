@@ -9,7 +9,7 @@ open System
 
 let originalOut = Console.Out
 
-let index_missing_closing_tag = """<!doctype html>
+let indexMissingClosingTag = """<!doctype html>
 <html>
 <head>
     <title>Example Domain</title>
@@ -29,7 +29,7 @@ let index_missing_closing_tag = """<!doctype html>
 </body>
 </html>
 """
-let index_too_much_closing_tag = """
+let indexTooMuchClosingTag = """
 <!doctype html>
 <html>
 <head>
@@ -55,7 +55,7 @@ let index_too_much_closing_tag = """
 [<Fact>]
 let ``too_much_closing_tag``() =
     try
-        index_too_much_closing_tag |> parseSmf |> buildTreeAndPrint 4 |> ignore
+        indexTooMuchClosingTag |> parseSmf |> buildTreeAndPrint 4 |> ignore
         Assert.Fail("no ex")
     with
     | ex -> Assert.Contains("unexpected closing tag",ex.Message)
@@ -64,13 +64,13 @@ let ``too_much_closing_tag``() =
 [<Fact>]
 let ``missing_closing_tag``() =
     try
-        index_missing_closing_tag |> parseSmf |> buildTreeAndPrint 4 |> ignore
+        indexMissingClosingTag |> parseSmf |> buildTreeAndPrint 4 |> ignore
         Assert.Fail("no ex")
     with
     | ex -> Assert.Contains("wrong clousing tags", ex.Message)
 
 
-let good_output = """<!DOCTYPE html>
+let goodOutput = """<!DOCTYPE html>
 <html>
     <head>
         <title>
@@ -127,7 +127,7 @@ More information...
 </html>
 """
 
-let good_but_short_input = """<!doctype html>
+let goodButShortInput = """<!doctype html>
 <html>
 <head><title>Example Domain</title>
 <meta charset="utf-8" /><meta http-equiv="Content-type" content="text/html; charset=utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /><style type="text/css">
