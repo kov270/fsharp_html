@@ -25,7 +25,6 @@ let doctypeParser =
 
 // Define a parser for parsing HTML tags
 let tagParser =
-    // let nameParser = (pstringCI "img" <|> pstringCI "br" <|> pstringCI "hr" <|> pstringCI "input" <|> many1Satisfy isLetter) .>> whitespaceParser
     let nameParser = 
         manySatisfy (fun c -> Char.IsLetterOrDigit c || c = '-') .>> whitespaceParser
     let closingseqParser = (pstring "/>" <|> pstring ">")
