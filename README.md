@@ -52,5 +52,42 @@ let tagParser =
 
 ```
 
+
+### Работа
+```
+> cat index.html | dotnet run 
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+Example Domain
+        </title>
+        <meta charset=utf-8>
+        <meta http-equiv=Content-type content=text/html; charset=utf-8>
+        <meta name=viewport content=width=device-width, initial-scale=1>
+        <style type=text/css>
+...
+        </style>
+    </head>
+    <body>
+        <div>
+            <h1>
+Example Domain
+            </h1>
+            <p>
+This domain is for use in illustrative examples in documents. You may use this
+    domain in literature without prior coordination or asking for permission.
+            </p>
+            <p>
+                <a href=https://www.iana.org/domains/example>
+More information...
+                </a>
+            </p>
+        </div>
+    </body>
+</html>
+
+```
+
 ### Выводы
 Стандарт HTML очень свободный, годы эволюции браузеров привели к большой свободе написания html, который довольно сложно привести к полностью читаемому формату (например отсутствующие закрытия тэгов, коротые закрываються разными браузерами по своему).
