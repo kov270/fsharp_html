@@ -84,43 +84,33 @@ let printAtribute (a: list<string * string>) =
     ) "" a
 
 let buildTreeAndPrint (indent: int) (input: list<HtmlTag>) =
-    List.fold (fun (stack: string list) tag ->
-        // printfn "====%A" stack
-        let ind = indent * stack.Length
-        match tag.IsClosing, stack with
-        | true, x::xs -> 
-            if stack.Length = 0 then
-                failwith "unexpected closing tag"
-            
-            printfn "%s</%s>" (String.replicate (ind-indent) " ") (tag.Name)
-            xs
-        | _, stack ->
-            if tag.Name = "text" then
-                printfn "%s" (snd tag.Attributes[0])
-            else
-                printfn "%s<%s%s>" (String.replicate ind " ") (tag.Name) (printAtribute tag.Attributes)
-            if tag.IsClosed then
-                stack
-            else
-                tag.Name :: stack
-    ) [] input
+    let s =
+        List.fold (fun (stack: string list) tag ->
+            // printfn "====%A" stack
+            let ind = indent * stack.Length
 
+            if tag.IsClosing && stack.Length = 0 then
+                failwithf "unexpected closing tag%A" tag.Name
 
-let buildTreeAndPrintOld (indent: int) (input: list<HtmlTag>) =
-    List.fold (fun (stack: string list) tag ->
-        // printfn "====%A" stack
-        let ind = indent * stack.Length
-        printfn "%s<%s>" (String.replicate ind " ") (tag.Name)
-        match tag.IsClosing, stack with
-        | true, x::xs -> 
-            if stack.Length = 0 then
-                failwith "unexpected closing tag"
-            xs
-        | _, stack ->
-            if tag.IsClosed then
-                stack
-            else
-                tag.Name :: stack
-    ) [] input
+            match tag.IsClosing, stack with
+            | true, x::xs ->
+                if x <> tag.Name then
+                    failwithf "wrong clousing tags in %A" tag.Name
 
-
+                printfn "%s</%s>" (String.replicate (ind-indent) " ") (tag.Name)
+                xs
+            | _, stack ->
+                if tag.Name = "text" then
+                    printfn "%s" (snd tag.Attributes[0])
+                else
+                    printfn "%s<%s%s>" (String.replicate ind " ") (tag.Name) (printAtribute tag.Attributes)
+                if tag.IsClosed then
+                    stack
+                else
+                    tag.Name :: stack
+        ) [] input
+    
+    if s.Length <> 0 then
+        failwithf "not enough clousing tags fore %A" s
+    s
+    
