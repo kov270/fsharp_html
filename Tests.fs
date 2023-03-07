@@ -168,3 +168,20 @@ let goodButShortInput = """<!doctype html>
 let ``normal_work``() =
     let actualOutput = goodButShortInput |> parseSmf |> buildTreeAndPrint 4    
     Assert.Equal(goodOutput, actualOutput)
+
+let notEnoughClousingTags = """    <!doctype html>
+    <html>
+    <head><title>Example Domain</title>
+    </head><body>
+    <div><h1>Example Domain</h1><p>This domain is for use in illustrative examples in documents. You may use this
+        domain in literature without prior coordination or asking for permission.</p><p><a href="https://www.iana.org/domains/example">More information...</a></p>
+    
+"""
+
+[<Fact>]
+let ``not_enough_clousing_tags``() =
+    try
+        notEnoughClousingTags |> parseSmf |> buildTreeAndPrint 4 |> ignore
+        Assert.Fail("no ex")
+    with
+    | ex -> Assert.Contains("not enough clousing tags fore [\"div\"; \"body\"; \"html\"]", ex.Message)
