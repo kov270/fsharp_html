@@ -85,7 +85,7 @@ let printAtribute (a: list<string * string>) =
     ) "" a
 
 let buildTreeAndPrint (indent: int) (input: list<HtmlTag>) =
-    let sb = new StringBuilder()
+    let sb = StringBuilder()
 
     let s =
         List.fold (fun (stack: string list) tag ->
