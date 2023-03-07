@@ -2,6 +2,7 @@ module Prog
 
 open FParsec
 open System
+open System.Text
 
 // Define a type to represent an HTML tag
 type HtmlTag =
@@ -84,6 +85,8 @@ let printAtribute (a: list<string * string>) =
     ) "" a
 
 let buildTreeAndPrint (indent: int) (input: list<HtmlTag>) =
+    let sb = new StringBuilder()
+
     let s =
         List.fold (fun (stack: string list) tag ->
             // printfn "====%A" stack
@@ -97,13 +100,13 @@ let buildTreeAndPrint (indent: int) (input: list<HtmlTag>) =
                 if x <> tag.Name then
                     failwithf "wrong clousing tags in %A" tag.Name
 
-                printfn "%s</%s>" (String.replicate (ind-indent) " ") (tag.Name)
+                Printf.bprintf sb "%s</%s>\n" (String.replicate (ind-indent) " ") (tag.Name)
                 xs
             | _, stack ->
                 if tag.Name = "text" then
-                    printfn "%s" (snd tag.Attributes[0])
+                    Printf.bprintf sb "%s\n" (snd tag.Attributes[0])
                 else
-                    printfn "%s<%s%s>" (String.replicate ind " ") (tag.Name) (printAtribute tag.Attributes)
+                    Printf.bprintf sb "%s<%s%s>\n" (String.replicate ind " ") (tag.Name) (printAtribute tag.Attributes)
                 if tag.IsClosed then
                     stack
                 else
@@ -112,5 +115,5 @@ let buildTreeAndPrint (indent: int) (input: list<HtmlTag>) =
     
     if s.Length <> 0 then
         failwithf "not enough clousing tags fore %A" s
-    s
     
+    sb.ToString()

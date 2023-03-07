@@ -164,23 +164,7 @@ let goodButShortInput = """<!doctype html>
 """
 
 
-// // Fail because of parallel execution
-// [<Fact>]
-// let ``normal_work``() =
-//     use writer = new System.IO.StringWriter()
-//     Console.SetOut writer
-//     goodButShortInput |> parseSmf |> buildTreeAndPrint 4 |> ignore
-//     let actualOutput = 
-//         writer.ToString()
-    
-//     // Console.SetOut(originalOut)
-//     Console.SetOut(Console.Out)
-//     writer.Close() 
-//     Assert.Equal(goodOutput, actualOutput)
-
 [<Fact>]
 let ``normal_work``() =
-    let leftstack = goodButShortInput |> parseSmf |> buildTreeAndPrint 4
-
-    Assert.True(List.isEmpty leftstack)
-
+    let actualOutput = goodButShortInput |> parseSmf |> buildTreeAndPrint 4    
+    Assert.Equal(goodOutput, actualOutput)
